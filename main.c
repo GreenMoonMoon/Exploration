@@ -13,9 +13,15 @@ void unloadScene();
 
 void DrawChunk();
 
+Vector3 getInputs();
+
+void MoveCamera(float deltaTime);
+
 Model terrainModel;
 Material terrainMaterial;
 Matrix *terrainTransform;
+
+Vector3 cameraTarget;
 
 int main() {
     InitWindow(800, 600, "Exploration");
@@ -27,7 +33,8 @@ int main() {
             70,
             CAMERA_PERSPECTIVE
     };
-    SetCameraMode(camera, CAMERA_ORBITAL);
+    SetCameraMode(camera, CAMERA_THIRD_PERSON);
+    cameraTarget = Vector3Zero();
 
     loadScene();
 
@@ -36,6 +43,9 @@ int main() {
     while (!WindowShouldClose()) {
         //Update
         PollInputEvents();
+        MoveCamera(GetFrameTime());
+
+        camera.target = cameraTarget;
         UpdateCamera(&camera);
 
         BeginDrawing();
@@ -45,13 +55,6 @@ int main() {
             BeginMode3D(camera);
             {
                 DrawGrid(64, 1.0f);
-
-//                DrawMeshInstanced(
-//                        terrainModel.meshes[0],
-//                        terrainModel.materials[terrainModel.meshMaterial[0]],
-//                        terrainTransform,
-//                        1
-//                );
             }
             EndMode3D();
 
@@ -74,7 +77,7 @@ void loadScene() {
 
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            terrainTransform[(i * 4) + j] = MatrixTranslate((float)j, 0.0f, (float)i);
+            terrainTransform[(i * 4) + j] = MatrixTranslate((float) j, 0.0f, (float) i);
         };
     };
 }
@@ -98,4 +101,16 @@ void DrawChunk() {
 
     Matrix matrix = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1};
     DrawMeshInstanced(terrainModel.meshes[0], terrainModel.materials[0], &matrix, 1);
+}
+
+Vector3 getInputs() {
+    return Vector3Normalize((Vector3) {
+            (float) (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)),
+            0.0f,
+            (float) (IsKeyDown(KEY_S) - IsKeyDown(KEY_W))
+    });
+}
+
+void MoveCamera(float deltaTime) {
+    cameraTarget = Vector3Add(cameraTarget, Vector3Scale(getInputs(), deltaTime * 10.0f));
 }
