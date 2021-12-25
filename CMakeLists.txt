@@ -17,7 +17,7 @@ set(CMAKE_C_STANDARD 17)
 add_executable(Exploration main.c)
 target_link_libraries(Exploration raylib)
 
-add_executable(ChunkEditor chunk_editor.c)
+add_executable(ChunkEditor chunk_editor.c src/map.c)
 target_link_libraries(ChunkEditor raylib)
 
 #DEBUG

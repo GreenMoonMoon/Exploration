@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include "raymath.h"
 
-#include "src/chunk.h"
+#include "src/map.h"
 
 #define RLIGHTS_IMPLEMENTATION
 #include "src/rlights.h"
@@ -60,11 +60,10 @@ int main() {
             BeginMode3D(camera);
             {
                 DrawGrid(64, 1.0f);
-                DrawMeshInstanced(terrainModel.meshes[0], terrainMaterial, m, 1);
             }
             EndMode3D();
 
-//            DebugDrawTilesAndIndex(terrainModel, camera, WHITE);
+            DebugDrawTilesAndIndex(terrainModel, camera, WHITE);
 
             DrawFPS(10, 10);
         }

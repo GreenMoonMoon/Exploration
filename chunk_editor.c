@@ -1,10 +1,9 @@
 #include <malloc.h>
-#include <stdio.h>
 
 #include "raylib.h"
 #include "raymath.h"
 
-#include "src/chunk.h"
+#include "src/map.h"
 
 #define RLIGHTS_IMPLEMENTATION
 
@@ -12,38 +11,19 @@
 
 #include "src/utilities/debug_draw.h"
 
-typedef struct Vector2i {
-    int x;
-    int y;
-} Vector2i;
-
-typedef struct Chunk {
-    char tiles[64];
-    Matrix tileTransforms[64];
-    Vector3 chunkCoord;
-} Chunk;
-
 void loadScene();
 
 void unloadScene();
 
 void processInputs();
 
-void LoadChunk(Chunk *chunk);
-
-void DrawChunks();
-
 Vector2i selectTile(Camera3D camera);
 
 Model terrainModel;
 Material terrainMaterial;
 
-Matrix *terrainFlatTransform;
-int terrainFlatCount;
-
 bool LeftClick = false;
 bool LeftClickReleased = true;
-
 
 int main() {
     InitWindow(800, 600, "Exploration");
@@ -58,36 +38,14 @@ int main() {
     SetCameraMode(camera, CAMERA_FREE);
 
     loadScene();
+    LoadMap();
 
-    terrainFlatTransform = malloc(sizeof(Matrix) * 64 * 9);
-    terrainFlatCount = 0;
+    Chunk *chunk = malloc(sizeof(Chunk));
+    chunk[0] = (Chunk){0};
+    chunk->tiles[2] = 9;
 
-    Chunk *chunk = malloc(sizeof(Chunk) * 9);
 
-    for (int c = 0; c < 9; c++) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                chunk[c].tileTransforms[i * 8 + j] = MatrixTranslate(
-                        (float) j + chunk[c].chunkCoord.x,
-                        0.0f + chunk[c].chunkCoord.y,
-                        (float) i + chunk[c].chunkCoord.z
-                );
-            }
-        }
-    }
-    chunk[0].chunkCoord = (Vector3) {-8.0f, 0.0f, -8.0f};
-    chunk[1].chunkCoord = (Vector3) {0.0f, 0.0f, -8.0f};
-    chunk[2].chunkCoord = (Vector3) {8.0f, 0.0f, -8.0f};
-    chunk[3].chunkCoord = (Vector3) {-8.0f, 0.0f, 0.0f};
-    chunk[4].chunkCoord = (Vector3) {0.0f, 0.0f, 0.0f};
-    chunk[5].chunkCoord = (Vector3) {8.0f, 0.0f, 0.0f};
-    chunk[6].chunkCoord = (Vector3) {-8.0f, 0.0f, 8.0f};
-    chunk[7].chunkCoord = (Vector3) {0.0f, 0.0f, 8.0f};
-    chunk[0].chunkCoord = (Vector3) {8.0f, 0.0f, 8.0f};
-
-    for(int i = 0; i < 9; i++){
-        LoadChunk(&chunk[i]);
-    }
+    LoadChunk(&chunk[0]);
 
     SetTargetFPS(60);
 
@@ -110,8 +68,7 @@ int main() {
             BeginMode3D(camera);
             {
                 DrawGrid(64, 1.0f);
-                DrawChunks();
-                DrawCubeWires((Vector3) {4.0f, 0.1f, -4.0f}, 8.0f, 0.0f, 8.0f, GREEN);
+                DrawChunks(terrainModel, terrainMaterial);
             }
             EndMode3D();
             DrawFPS(10, 10);
@@ -120,7 +77,7 @@ int main() {
     }
 
     free(chunk);
-    free(terrainFlatTransform);
+    UnloadMap();
     unloadScene();
     CloseWindow();
 }
@@ -154,24 +111,6 @@ void loadScene() {
 
 void unloadScene() {
     UnloadModel(terrainModel);
-}
-
-void LoadChunk(Chunk *chunk) {
-    for (int i = 0; i < 64; i++) {
-        switch (chunk->tiles[i]) {
-            case 0:
-                terrainFlatTransform[terrainFlatCount] = MatrixMultiply(
-                        chunk->tileTransforms[i],
-                        MatrixTranslate(chunk->chunkCoord.x, chunk->chunkCoord.y, chunk->chunkCoord.z)
-                );
-                terrainFlatCount++;
-                break;
-        }
-    }
-}
-
-void DrawChunks() {
-    DrawMeshInstanced(terrainModel.meshes[0], terrainMaterial, terrainFlatTransform, terrainFlatCount);
 }
 
 void processInputs() {
