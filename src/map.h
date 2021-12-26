@@ -27,7 +27,8 @@ typedef struct Vector2i {
 
 typedef struct Chunk {
     char tiles[64];
-    Vector3 chunkCoord;
+    char tileOrientations[64];
+    Vector3 coord;
 } Chunk;
 
 typedef struct Map {

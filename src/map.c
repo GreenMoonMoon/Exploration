@@ -78,70 +78,64 @@ void UnloadMap() {
 }
 
 void LoadChunk(Chunk *chunk) {
+    Matrix tileMatrix;
+
     for (int i = 0; i < 64; i++) {
+        switch (chunk->tileOrientations[i]) {
+            case 0:
+                tileMatrix = MatrixTranslate((i % 8) + chunk->coord.x, chunk->coord.y, floor(i / 8) + chunk->coord.z);
+                break;
+            case 1:
+                tileMatrix = MatrixMultiply(
+                        MatrixTranslate((i % 8) + chunk->coord.x, chunk->coord.y, floor(i / 8) - 1.0f + chunk->coord.z),
+                        MatrixRotateY(DEG2RAD * 90)
+                );
+                break;
+            case 2:
+                tileMatrix = MatrixMultiply(
+                        MatrixTranslate((i % 8) - 1.0f + chunk->coord.x, chunk->coord.y, floor(i / 8) - 1.0f + chunk->coord.z),
+                        MatrixRotateY(DEG2RAD * 180)
+                );
+                break;
+            case 3:
+                tileMatrix = MatrixMultiply(
+                        MatrixTranslate((i % 8) - 1.0f + chunk->coord.x, chunk->coord.y, floor(i / 8) + chunk->coord.z),
+                        MatrixRotateY(DEG2RAD * 270)
+                );
+                break;
+        }
+
         switch (chunk->tiles[i]) {
             case 0:
-                terrainFlatTransform[terrainFlatCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainFlatTransform[terrainFlatCount] = tileMatrix;
                 terrainFlatCount++;
                 break;
             case 1:
-                terrainRampTransform[terrainRampCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainRampTransform[terrainRampCount] = tileMatrix;
                 terrainRampCount++;
                 break;
             case 2:
-                terrainRampLargeTransform[terrainRampLargeCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainRampLargeTransform[terrainRampLargeCount] = tileMatrix;
                 terrainRampLargeCount++;
                 break;
             case 8:
-                terrainSideTransform[terrainSideCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainSideTransform[terrainSideCount] = tileMatrix;
                 terrainSideCount++;
                 break;
             case 9:
-                terrainSideCliffTransform[terrainSideCliffCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainSideCliffTransform[terrainSideCliffCount] = tileMatrix;
                 terrainSideCliffCount++;
                 break;
             case 10:
-                terrainSideCornerTransform[terrainSideCornerCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainSideCornerTransform[terrainSideCornerCount] = tileMatrix;
                 terrainSideCornerCount++;
                 break;
             case 11:
-                terrainSideCornerInnerTransform[terrainSideCornerInnerCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainSideCornerInnerTransform[terrainSideCornerInnerCount] = tileMatrix;
                 terrainSideCornerInnerCount++;
                 break;
             case 12:
-                terrainSideEndTransform[terrainSideEndCount] = MatrixTranslate(
-                        (i % 8) + chunk->chunkCoord.x,
-                        chunk->chunkCoord.y,
-                        floor(i / 8) + chunk->chunkCoord.z
-                );
+                terrainSideEndTransform[terrainSideEndCount] = tileMatrix;
                 terrainSideEndCount++;
                 break;
         }

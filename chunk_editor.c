@@ -1,4 +1,5 @@
 #include <malloc.h>
+#include <stdio.h>
 
 #include "raylib.h"
 #include "raymath.h"
@@ -42,7 +43,10 @@ int main() {
 
     Chunk *chunk = malloc(sizeof(Chunk));
     chunk[0] = (Chunk){0};
-    chunk->tiles[2] = 9;
+    chunk->tiles[0] = 1;
+    chunk->tileOrientations[0] = 3;
+
+    chunk->coord = (Vector3){0.0f, 0.0f, 1.0f};
 
 
     LoadChunk(&chunk[0]);
@@ -57,6 +61,7 @@ int main() {
         Vector2i selectedTile;
         if (LeftClick) {
             selectedTile = selectTile(camera);
+            printf("%d: %d\n", selectedTile.x, selectedTile.y);
         }
 
         UpdateCamera(&camera);
@@ -69,6 +74,7 @@ int main() {
             {
                 DrawGrid(64, 1.0f);
                 DrawChunks(terrainModel, terrainMaterial);
+                DrawCubeWires((Vector3){4.0f, 0.0f, 4.0f}, 8.0f, 0.0f, 8.0f, GREEN);
             }
             EndMode3D();
             DrawFPS(10, 10);
@@ -102,8 +108,6 @@ void loadScene() {
 
     CreateLight(LIGHT_DIRECTIONAL, (Vector3) {50.0f, 50.0f, 0.0f}, Vector3Zero(), WHITE, shader);
 
-    // NOTE: We are assigning the instancing shader to material.shader
-    // to be used on mesh drawing with DrawMeshInstanced()
     terrainMaterial = LoadMaterialDefault();
     terrainMaterial.shader = shader;
     terrainMaterial.maps[MATERIAL_MAP_DIFFUSE].color = RED;
