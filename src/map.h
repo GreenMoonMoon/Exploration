@@ -1,6 +1,7 @@
 //
 // Created by MoonMoon on 2021-12-17.
 //
+#include "raylib.h"
 #include "raymath.h"
 
 #ifndef EXPLORATION_CHUNCK_H

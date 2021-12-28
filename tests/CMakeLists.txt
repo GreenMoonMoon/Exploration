@@ -9,4 +9,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(gtest)
 
 add_executable(MapTests map_tests.cpp ../src/map.c)
-target_link_libraries(MapTests gtest gtest_main)
+target_link_libraries(MapTests gtest gtest_main raylib)
+
+add_executable(BasicPhysicTests basic_physic_tests.cpp)
+target_link_libraries(BasicPhysicTests gtest gtest_main raylib)

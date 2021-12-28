@@ -13,11 +13,14 @@ FetchContent_MakeAvailable(raylib)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(Exploration main.c)
+add_executable(Exploration expl1.c)
 target_link_libraries(Exploration raylib)
 
 add_executable(ChunkEditor chunk_editor.c src/map.c)
 target_link_libraries(ChunkEditor raylib)
+
+add_executable(PhysicExploration physic_exploration.c src/particles.c)
+target_link_libraries(PhysicExploration raylib)
 
 #DEBUG
 add_executable(MeshInstanced mesh_instanced.c)

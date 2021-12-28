@@ -72,6 +72,8 @@ int main() {
 
     unloadScene();
     CloseWindow();
+
+    return 0;
 }
 
 
