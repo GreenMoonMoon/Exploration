@@ -7,7 +7,7 @@
 #include "raymath.h"
 #include "rlgl.h"
 
-#include "src/particles.h"
+#include "src/physic/particles.h"
 
 
 #define RANDF(a) ((float)rand()/(float)(RAND_MAX) * a)
@@ -40,7 +40,7 @@ int main() {
         PollInputEvents();
 
         UpdateCamera(&camera);
-        UpdateParticles(particles, 128, 1.0f/60.0f);
+//        UpdateParticles(particles, 128, 1.0f/60.0f);
 
         // RENDER
         BeginDrawing();
