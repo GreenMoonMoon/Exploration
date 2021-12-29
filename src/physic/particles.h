@@ -10,8 +10,12 @@
 typedef struct Particle {
     Vector3 position;
     Vector3 velocity;
-    float mass;
+    Vector3 acceleration;
+    float inverseMass;
+    float damping;
 } Particle;
+
+void IntegrateForce(Particle *particle, Vector3 force);
 
 void IntegrateVelocity(Particle *particle, float deltaTime);
 
