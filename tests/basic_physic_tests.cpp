@@ -94,3 +94,41 @@ TEST(Particles, Force) {
     IntegrateVelocity(&p, 1.0f);
     EXPECT_EQ(p.position.x, 10.0f);
 }
+
+TEST(Particles, SettingMass) {
+    Particle p = {
+            {0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f},
+            1.0f,
+            1.0f
+    };
+
+    SetMass(&p, 2.0f);
+    EXPECT_FLOAT_EQ(p.inverseMass, 0.5f);
+}
+
+TEST(Particles, Gravity) {
+    Particle p1 = {
+            {0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f},
+            1.0f,
+            1.0f
+    };
+    Particle p2 = {
+            {0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f},
+            {0.0f, 0.0f, 0.0f},
+            0.5f,
+            1.0f
+    };
+
+    IntegrateForce(&p1, {0.0f, -9.8f, 0.0f});
+    IntegrateVelocity(&p1, 1.0f);
+    EXPECT_FLOAT_EQ(p1.position.y, -9.8f);
+
+    IntegrateForce(&p2, GetForceGravity(p2, {0.0f, -9.8f, 0.0f}));
+    IntegrateVelocity(&p2, 1.0f);
+    EXPECT_FLOAT_EQ(p2.position.y, -9.8f);
+}

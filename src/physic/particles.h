@@ -19,4 +19,9 @@ void IntegrateForce(Particle *particle, Vector3 force);
 
 void IntegrateVelocity(Particle *particle, float deltaTime);
 
+void SetMass(Particle *particle, float mass);
+
+Vector3 GetForceGravity(Particle particle, Vector3 gravity);
+
+
 #endif //EXPLORATION_PARTICLES_H
