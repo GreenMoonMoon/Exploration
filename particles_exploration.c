@@ -27,11 +27,14 @@ int main() {
 
     SetCameraMode(camera, CAMERA_FREE);
 
+    // Test particles
     Particle *particles = malloc(128 * sizeof(Particle));
     for (int i = 0; i < 128; i++) {
         particles[i].position = (Vector3) {RANDF(16.0f) - 8.0f, RANDF(16.0f) + 8.0f, RANDF(16.0f) - 8.0f};
-        particles[i].velocity = (Vector3) {0.0f, -9.8f, 0.0f};
-        particles[i].damping = 0.9995f;
+        particles[i].velocity = (Vector3) {0.0f, 0.0f, 0.0f};
+        particles[i].acceleration = (Vector3){0.0f, -9.8f, 0.0f};
+        particles[i].inverseMass = 1.0f;
+        particles[i].damping = 0.995f;
     }
 
     SetTargetFPS(60);
@@ -40,9 +43,10 @@ int main() {
         // UPDATE
         PollInputEvents();
         UpdateCamera(&camera);
-        // particles update
+        // Particles update
+        float deltaTime = GetFrameTime();
         for (int i = 0; i < 128; i++) {
-            Integrate(&particles[i], GetFrameTime());
+            Integrate(&particles[i], deltaTime);
         }
 
         // RENDER

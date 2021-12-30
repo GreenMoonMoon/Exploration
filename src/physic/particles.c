@@ -5,26 +5,18 @@
 #include "particles.h"
 
 void Integrate(Particle *particle, float deltaTime) {
-    //Update velocity first for semi-explicit euler integration
+    //Update velocity first, semi-explicit euler integration
     particle->velocity = Vector3Add(particle->velocity, Vector3Scale(particle->acceleration, deltaTime));
 
-    // Short form, useful for most cases
     //P' = P + V * dt
     particle->position = Vector3Add(particle->position, Vector3Scale(particle->velocity, deltaTime));
 
-      // Long from, use with large acceleration values
-//    // P' = P + V * dt + 0.5 * A * dt * dt
-//    particle->position = Vector3Add(
-//            particle->position,
-//            Vector3Add(
-//                    Vector3Scale(particle->velocity, deltaTime),
-//                    Vector3Scale(particle->acceleration, 0.5f * deltaTime * deltaTime)
-//            )
-//    );
-
-//    particle->velocity = Vector3Add(particle->velocity, Vector3Scale(particle->acceleration, deltaTime));
-//    particle->position = Vector3Add(particle->position, Vector3Scale(particle->velocity, deltaTime));
-//    particle->velocity = Vector3Scale(particle->velocity, particle->damping);
+    //Adding damping
+#ifndef SIMPLIFIED_DAMPING
+    particle->velocity = Vector3Scale(particle->velocity, powf(particle->damping, deltaTime));
+#else
+    particle->velocity = Vector3Scale(particle->velocity, 0.9995);
+#endif
 }
 
 void SetMass(Particle *particle, float mass) {

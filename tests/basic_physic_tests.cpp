@@ -9,7 +9,7 @@ extern "C" {
 #include "../src/physic/particles.h"
 }
 
-TEST(Particles, IntegrateSteps) {
+TEST(BasicParticles, IntegrateSteps) {
     Particle p = {
             {0.0f, 0.0f, 0.0f},
             {1.0f, 0.0f, 0.0f},
@@ -18,32 +18,11 @@ TEST(Particles, IntegrateSteps) {
             1.0f
     };
 
-
+    Integrate(&p, 1.0f);
+    EXPECT_FLOAT_EQ(p.position.x, 1.0f);
 }
 
-//TEST(Particles, IntegrateSteps) {
-//    Particle p = {
-//            {0.0f, 0.0f, 0.0f},
-//            {1.0f, 0.0f, 0.0f},
-//            {0.0f, 0.0f, 0.0f},
-//            1.0f,
-//            1.0f
-//    };
-//
-//    IntegrateVelocity(&p, 1.0f);
-//    EXPECT_NEAR(p.position.x, 1.0f, 0.001f);
-//    p.position = {0.0f, 0.0f, 0.0f};
-//
-//    IntegrateVelocity(&p, 0.1f);
-//    EXPECT_NEAR(p.position.x, 0.1f, 0.001f);
-//    p.position = {0.0f, 0.0f, 0.0f};
-//
-//    p.velocity.x = 0.1f;
-//    IntegrateVelocity(&p, 1.0f);
-//    EXPECT_NEAR(p.position.x, 0.1f, 0.001f);
-//}
-
-TEST(Particles, Damping) {
+TEST(BasicParticles, Damping) {
     Particle p = {
             {0.0f, 0.0f, 0.0f},
             {1.0f, 0.0f, 0.0f},
@@ -56,7 +35,7 @@ TEST(Particles, Damping) {
     EXPECT_NEAR(p.velocity.x, 0.5f, 0.001f);
 }
 
-TEST(Particles, Acceleration) {
+TEST(BasicParticles, Acceleration) {
     Particle p = {
             {0.0f, 0.0f, 0.0f},
             {0.0f, 0.0f, 0.0f},
@@ -79,7 +58,7 @@ TEST(Particles, Acceleration) {
 }
 
 //Infinite mass is noted as inverseMass of 0. This should prevent the particles from moving under any forces.
-TEST(Particles, InfiniteMass) {
+TEST(BasicParticles, InfiniteMass) {
     Particle p = {
             {0.0f, 0.0f, 0.0f},
             {0.0f, 0.0f, 0.0f},
@@ -92,20 +71,20 @@ TEST(Particles, InfiniteMass) {
     EXPECT_EQ(p.position.x, 0.0f);
 }
 
-TEST(Particles, Force) {
-    Particle p = {
-            {0.0f, 0.0f, 0.0f},
-            {0.0f, 0.0f, 0.0f},
-            {0.0f, 0.0f, 0.0f},
-            1.0f,
-            1.0f
-    };
+//TEST(BasicParticles, Force) {
+//    Particle p = {
+//            {0.0f, 0.0f, 0.0f},
+//            {0.0f, 0.0f, 0.0f},
+//            {0.0f, 0.0f, 0.0f},
+//            1.0f,
+//            1.0f
+//    };
+//
+//    Integrate(&p, 1.0f);
+//    EXPECT_EQ(p.position.x, 10.0f);
+//}
 
-    Integrate(&p, 1.0f);
-    EXPECT_EQ(p.position.x, 10.0f);
-}
-
-TEST(Particles, SettingMass) {
+TEST(BasicParticles, SettingMass) {
     Particle p = {
             {0.0f, 0.0f, 0.0f},
             {0.0f, 0.0f, 0.0f},
@@ -118,7 +97,7 @@ TEST(Particles, SettingMass) {
     EXPECT_FLOAT_EQ(p.inverseMass, 0.5f);
 }
 
-TEST(Particles, Gravity) {
+TEST(BasicParticles, Gravity) {
     Particle p1 = {
             {0.0f, 0.0f, 0.0f},
             {0.0f, 0.0f, 0.0f},

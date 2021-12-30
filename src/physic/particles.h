@@ -15,6 +15,11 @@ typedef struct Particle {
     float damping;
 } Particle;
 
+typedef struct AgeParticle {
+    Particle particle;
+    float age;
+} AgeParticle;
+
 void Integrate(Particle *particle, float deltaTime);
 
 void SetMass(Particle *particle, float mass);

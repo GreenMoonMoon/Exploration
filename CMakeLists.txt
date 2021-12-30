@@ -19,7 +19,7 @@ target_link_libraries(Exploration raylib)
 add_executable(ChunkEditor chunk_editor.c src/map.c)
 target_link_libraries(ChunkEditor raylib)
 
-add_executable(PhysicExploration physic_exploration.c src/physic/particles.c)
+add_executable(PhysicExploration particles_exploration.c src/physic/particles.c)
 target_link_libraries(PhysicExploration raylib)
 
 #DEBUG
