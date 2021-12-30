@@ -30,7 +30,7 @@ int main() {
     Particle *particles = malloc(128 * sizeof(Particle));
     for (int i = 0; i < 128; i++) {
         particles[i].position = (Vector3) {RANDF(16.0f) - 8.0f, RANDF(16.0f) + 8.0f, RANDF(16.0f) - 8.0f};
-        particles[i].velocity = (Vector3){0.0f, -1.0f, 0.0f};
+        particles[i].velocity = (Vector3) {0.0f, -9.8f, 0.0f};
         particles[i].damping = 0.9995f;
     }
 
@@ -39,12 +39,11 @@ int main() {
     while (!WindowShouldClose()) {
         // UPDATE
         PollInputEvents();
-
         UpdateCamera(&camera);
-        for(int i = 0 ; i < 128; i++){
-            IntegrateVelocity(&particles[i], GetFrameTime());
+        // particles update
+        for (int i = 0; i < 128; i++) {
+            Integrate(&particles[i], GetFrameTime());
         }
-//        UpdateParticles(particles, 128, 1.0f/60.0f);
 
         // RENDER
         BeginDrawing();
