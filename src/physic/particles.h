@@ -1,27 +1,28 @@
 //
 // Created by MoonMoon on 2021-12-26.
 //
-#include "raymath.h"
 
+#include "../math_utils.h"
 
 #ifndef EXPLORATION_PARTICLES_H
 #define EXPLORATION_PARTICLES_H
 
-typedef struct Particle {
+class Particle {
+public:
     Vector3 position;
     Vector3 velocity;
     Vector3 acceleration;
     float inverseMass;
     float damping;
-} Particle;
-
-typedef struct AgeParticle {
-    Particle particle;
     float age;
-} AgeParticle;
+    float ageLimit;
+    Vector3 forces;
 
-void Integrate(Particle *particle, float deltaTime);
+void Integrate(float deltaTime);
 
-void SetMass(Particle *particle, float mass);
+void SetMass(float mass);
+
+void AddForce(Vector3 force);
+};
 
 #endif //EXPLORATION_PARTICLES_H

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(Exploration C)
+project(Exploration CXX)
 
 include(FetchContent)
 
@@ -11,20 +11,9 @@ FetchContent_Declare(
 Set(GRAPHICS "GRAPHICS_API_OPENGL_43")
 FetchContent_MakeAvailable(raylib)
 
-set(CMAKE_C_STANDARD 17)
-
-add_executable(Exploration expl1.c)
-target_link_libraries(Exploration raylib)
-
-add_executable(ChunkEditor chunk_editor.c src/map.c)
-target_link_libraries(ChunkEditor raylib)
-
-add_executable(PhysicExploration particles_exploration.c src/physic/particles.c)
-target_link_libraries(PhysicExploration raylib)
-
-#DEBUG
-add_executable(MeshInstanced mesh_instanced.c)
-target_link_libraries(MeshInstanced raylib)
+set(CMAKE_CXX_STANDARD 20)
+add_executable(Expl1 exploration1.cpp)
+target_link_libraries(Expl1 raylib)
 
 #TESTS
 add_subdirectory(tests)
