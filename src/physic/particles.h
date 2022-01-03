@@ -25,4 +25,9 @@ void SetMass(float mass);
 void AddForce(Vector3 force);
 };
 
+class ForceGenerator {
+public:
+    virtual void UpdateForce(Particle& particle, float deltaTime) = 0;
+};
+
 #endif //EXPLORATION_PARTICLES_H

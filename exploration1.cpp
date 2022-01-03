@@ -1,6 +1,8 @@
 //
 // Created by MoonMoon on 2022-01-01.
 //
+#include <vector>
+
 #include "raylib.h"
 #include "src/math_utils.h"
 
@@ -19,11 +21,16 @@ int main() {
     };
     SetCameraMode(camera, CAMERA_FREE);
 
-    while(!WindowShouldClose()) {
+    std::vector<Particle> particles = std::vector<Particle>(128);
+    for (Particle &p: particles) {
+        p.position = Vector3(RANDF(8.0f), RANDF(8.0f), RANDF(8.0f));
+    }
+
+    while (!WindowShouldClose()) {
         PollInputEvents();
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+            ClearBackground(RAYWHITE);
 
             BeginMode3D(camera);
                 DrawGrid(8, 1.0f);

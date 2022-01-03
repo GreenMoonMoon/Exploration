@@ -1,11 +1,12 @@
 //
 // Created by MoonMoon on 2022-01-01.
 //
-
 #include "raymath.h"
 
 #ifndef EXPLORATION_MATH_UTILS_H
 #define EXPLORATION_MATH_UTILS_H
+
+#define RANDF(a) (float)rand()/(float)(RAND_MAX/a)
 
 //Vector3
 inline Vector3 operator*(Vector3 v, float s) {

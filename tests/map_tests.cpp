@@ -7,6 +7,6 @@ extern "C" {
 #include "../src/map.h"
 }
 
-TEST(ChunkTests, MapShiftValues) {
+TEST(TileSet, tes) {
 
 }
