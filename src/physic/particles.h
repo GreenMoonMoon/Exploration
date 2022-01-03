@@ -12,22 +12,23 @@ public:
     Vector3 position;
     Vector3 velocity;
     Vector3 acceleration;
+    Vector3 forces;
     float inverseMass;
     float damping;
-    float age;
-    float ageLimit;
-    Vector3 forces;
 
-void Integrate(float deltaTime);
+public:
+    Particle();
 
-void SetMass(float mass);
+    void Integrate(float deltaTime);
 
-void AddForce(Vector3 force);
+    void SetMass(float mass);
+
+    void AddForce(Vector3 force);
 };
 
 class ForceGenerator {
 public:
-    virtual void UpdateForce(Particle& particle, float deltaTime) = 0;
+    virtual void UpdateForce(Particle &particle, float deltaTime) = 0;
 };
 
 #endif //EXPLORATION_PARTICLES_H

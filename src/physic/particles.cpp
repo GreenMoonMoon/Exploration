@@ -4,6 +4,8 @@
 
 #include "particles.h"
 
+Particle::Particle() : position({}), velocity({}), acceleration({}), forces({}), inverseMass(1), damping(9.995) {}
+
 void Particle::Integrate(float deltaTime) {
     //Update velocity first, semi-explicit euler integration
     Vector3 accel = acceleration;

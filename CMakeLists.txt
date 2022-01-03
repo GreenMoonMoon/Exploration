@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(raylib)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Expl1 exploration1.cpp)
+add_executable(Expl1 exploration1.cpp src/physic/particles.cpp)
 target_link_libraries(Expl1 raylib)
 
 add_executable(Expl2 exploration2.cpp src/map.cpp)

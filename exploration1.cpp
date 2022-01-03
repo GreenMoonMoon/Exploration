@@ -23,18 +23,28 @@ int main() {
 
     std::vector<Particle> particles = std::vector<Particle>(128);
     for (Particle &p: particles) {
-        p.position = Vector3(RANDF(8.0f), RANDF(8.0f), RANDF(8.0f));
+        p.position = (Vector3) {RANDF(8.0f), RANDF(8.0f), RANDF(8.0f)};
+        p.acceleration = (Vector3) {0.0f, -9.8f, 0.9f};
     }
 
     while (!WindowShouldClose()) {
         PollInputEvents();
+        UpdateCamera(&camera);
+
+        float frameTime = GetFrameTime();
+        for (Particle &p: particles) {
+            p.Integrate(frameTime);
+        }
 
         BeginDrawing();
-            ClearBackground(RAYWHITE);
+        ClearBackground(RAYWHITE);
 
-            BeginMode3D(camera);
-                DrawGrid(8, 1.0f);
-            EndMode3D();
+        BeginMode3D(camera);
+        for (Particle &p: particles) {
+            DrawPoint3D(p.position - (Vector3) {4.0f, 0.0f, 4.0f}, BLACK);
+        }
+        DrawGrid(8, 1.0f);
+        EndMode3D();
         EndDrawing();
     }
 
