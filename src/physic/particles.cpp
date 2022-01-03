@@ -33,3 +33,9 @@ void Particle::SetMass(float mass) {
 void Particle::AddForce(Vector3 force) {
     forces = forces + force;
 }
+
+void UpdateParticles(std::vector<Particle> &particles, float frameTime) {
+    for (Particle &p: particles) {
+        p.Integrate(frameTime);
+    }
+}

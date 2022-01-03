@@ -27,14 +27,12 @@ int main() {
         p.acceleration = (Vector3) {0.0f, -9.8f, 0.9f};
     }
 
+    SetTargetFPS(60);
+
     while (!WindowShouldClose()) {
         PollInputEvents();
         UpdateCamera(&camera);
-
-        float frameTime = GetFrameTime();
-        for (Particle &p: particles) {
-            p.Integrate(frameTime);
-        }
+        UpdateParticles(particles, GetFrameTime());
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -45,6 +43,7 @@ int main() {
         }
         DrawGrid(8, 1.0f);
         EndMode3D();
+        DrawFPS(10, 10);
         EndDrawing();
     }
 

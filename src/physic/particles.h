@@ -1,6 +1,7 @@
 //
 // Created by MoonMoon on 2021-12-26.
 //
+#include <vector>
 
 #include "../math_utils.h"
 
@@ -30,5 +31,7 @@ class ForceGenerator {
 public:
     virtual void UpdateForce(Particle &particle, float deltaTime) = 0;
 };
+
+void UpdateParticles(std::vector<Particle>& particles, float frameTime);
 
 #endif //EXPLORATION_PARTICLES_H
