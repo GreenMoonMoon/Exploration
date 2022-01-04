@@ -27,7 +27,11 @@ void Particle::Integrate(float deltaTime) {
 }
 
 void Particle::SetMass(float mass) {
-    inverseMass = 1 / mass;
+    inverseMass = 1.0f / mass;
+}
+
+float Particle::GetMass() {
+    return 1.0f / inverseMass;
 }
 
 void Particle::AddForce(Vector3 force) {
@@ -38,4 +42,15 @@ void UpdateParticles(std::vector<Particle> &particles, float frameTime) {
     for (Particle &p: particles) {
         p.Integrate(frameTime);
     }
+}
+
+Gravity::Gravity(Vector3 gravity) : gravity(gravity){}
+
+void Gravity::UpdateForce(Particle &particle, float deltaTime) {
+    if(particle.inverseMass == 0) return;
+    particle.AddForce(gravity * particle.GetMass());
+}
+
+void Drag::UpdateForce(Particle &particle, float deltaTime) {
+
 }

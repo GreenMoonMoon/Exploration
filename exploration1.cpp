@@ -24,15 +24,21 @@ int main() {
     std::vector<Particle> particles = std::vector<Particle>(128);
     for (Particle &p: particles) {
         p.position = (Vector3) {RANDF(8.0f), RANDF(8.0f), RANDF(8.0f)};
-        p.acceleration = (Vector3) {0.0f, -9.8f, 0.9f};
     }
+
+    auto g = Gravity((Vector3){0.0f, -9.8f, 0.0f});
 
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
         PollInputEvents();
+        float frameTime = GetFrameTime();
+
         UpdateCamera(&camera);
-        UpdateParticles(particles, GetFrameTime());
+        for(Particle &p: particles){
+            g.UpdateForce(p, frameTime);
+        }
+        UpdateParticles(particles, frameTime);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
