@@ -3,52 +3,60 @@
 //
 #include <vector>
 
-#include "../math_utils.h"
+#include "../math/expl_math.h"
 
 #ifndef EXPLORATION_PARTICLES_H
 #define EXPLORATION_PARTICLES_H
 
+namespace Exploration {
 
-class Particle {
-public:
-    Vector3 position;
-    Vector3 velocity;
-    Vector3 acceleration;
-    Vector3 forces;
-    float inverseMass;
-    float damping;
+    class Particle {
+    public:
+        Vector3 position;
+        Vector3 velocity;
+        Vector3 acceleration;
+        Vector3 forces;
+        float inverseMass;
+        float damping;
 
-public:
-    Particle();
+    public:
+        Particle();
 
-    void Integrate(float deltaTime);
+        void Integrate(float deltaTime);
 
-    void SetMass(float mass);
+        void SetMass(float mass);
 
-    float GetMass();
+        float GetMass() const;
 
-    void AddForce(Vector3 force);
-};
+        void AddForce(Vector3 force);
+    };
 
-class ForceGenerator {
-public:
-    virtual void UpdateForce(Particle &particle, float deltaTime) = 0;
-};
+    class ForceGenerator {
+    public:
+        virtual void UpdateForce(Particle &particle, float deltaTime) = 0;
+    };
 
-class Gravity : ForceGenerator {
-public:
-    Vector3 gravity;
-public:
-    explicit Gravity(Vector3 gravity);
+    class ParticleGravity : ForceGenerator {
+    public:
+        Vector3 gravity;
+    public:
+        explicit ParticleGravity(Vector3 gravity);
 
-    void UpdateForce(Particle &particle, float deltaTime) override;
-};
+        void UpdateForce(Particle &particle, float deltaTime) override;
+    };
 
-class Drag : ForceGenerator {
-public:
-    void UpdateForce(Particle &particle, float deltaTime) override;
-};
+    class ParticleDrag : ForceGenerator {
+    public:
+        float k1;
+        float k2;
+    public:
+        ParticleDrag(float k1, float k2);
 
-void UpdateParticles(std::vector<Particle> &particles, float frameTime);
+        void UpdateForce(Particle &particle, float deltaTime) override;
+    };
+
+    void UpdateParticles(std::vector<Particle> &particles, float frameTime);
+
+}
 
 #endif //EXPLORATION_PARTICLES_H
