@@ -19,7 +19,15 @@ FetchContent_MakeAvailable(glfw)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(RenderExpl1 render_exploration1.cpp external/glad/src/gl.c)
+set(
+        RenderExpl1_SOURCE_FILES
+        render_exploration1.cpp
+        src/render/shader.cpp
+
+        external/glad/src/gl.c
+)
+
+add_executable(RenderExpl1 ${RenderExpl1_SOURCE_FILES})
 target_include_directories(RenderExpl1 PUBLIC "external/glad/include")
 target_link_libraries(RenderExpl1 glfw)
 
