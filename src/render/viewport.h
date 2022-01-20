@@ -1,8 +1,0 @@
-//
-// Created by MoonMoon on 2022-01-15.
-//
-
-#ifndef EXPLORATION_VIEWPORT_H
-#define EXPLORATION_VIEWPORT_H
-
-#endif //EXPLORATION_VIEWPORT_H

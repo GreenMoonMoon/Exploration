@@ -1,13 +1,12 @@
 //
 // Created by MoonMoon on 2022-01-17.
 //
-#include <string>
 #include <iostream>
 
 #include "glad/gl.h"
 #include "GLFW/glfw3.h"
 
-#include "src/render/shader.h"
+#include "src/render/render.h"
 
 using namespace Expl;
 
@@ -44,54 +43,41 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     //Set geometry
-    float vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f
-    };
-
-    //Vertex buffer object VBO
-    unsigned int vbo;
-    glGenBuffers(1, &vbo);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+//    float vertices[] = {
+//            -0.5f, -0.5f, 0.0f, // left
+//            0.5f, -0.5f, 0.0f, // right
+//            0.0f,  0.5f, 0.0f  // top
+//    };
 
     //Shader
-    std::string vertexSource;
-    readFile(vertexSource, "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert");
-
-    std::string fragmentSource;
-    readFile(fragmentSource, "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag");
-
-    if (vertexSource.empty() || fragmentSource.empty()) {
+    unsigned int shaderProgram = LoadShader(
+            "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
+            "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
+    );
+    if(shaderProgram == -1){
         glfwTerminate();
         return -1;
     }
 
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    const char *vertex_c_str = vertexSource.c_str();
-    glShaderSource(vertexShader, 1, &vertex_c_str, nullptr);
-    glCompileShader(vertexShader);
-    checkShader(vertexShader);
+//    //Vertex buffer object VBO
+//    unsigned int vbo;
+//    glGenBuffers(1, &vbo);
+//
+//    unsigned int vao;
+//    glGenVertexArrays(1, &vao);
+//
+//    glBindVertexArray(vao);
+//
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+//
+//    //Set the attribute in the glsl
+//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr); //Setup layout(location = 0)
+//    glEnableVertexAttribArray(0);
 
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    const char *fragment_c_str = fragmentSource.c_str();
-    glShaderSource(fragmentShader, 1, &fragment_c_str, nullptr);
-    glCompileShader(fragmentShader);
-    checkShader(fragmentShader);
-
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    checkProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    Mesh mesh {};
+    mesh.program = shaderProgram;
+    mesh.vertexCount = 3;
 
     while (!glfwWindowShouldClose(window)) {
         //input
@@ -101,11 +87,14 @@ int main() {
         glClearColor(0.55f, 0.55f, 0.55f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        mesh.Draw();
+
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
 
     //Cleanup
+
     glfwDestroyWindow(window);
     glfwTerminate();
 

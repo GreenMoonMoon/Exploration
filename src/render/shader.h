@@ -6,11 +6,13 @@
 #define EXPLORATION_SHADER_H
 
 namespace Expl {
+    unsigned int LoadShader(const char* vertexFile, const char* fragmentFile);
+
     void readFile(std::string &str, const char *filePath);
 
-    void checkShader(unsigned int shader);
+    bool checkShader(unsigned int shader);
 
-    void checkProgram(unsigned int program);
+    bool checkProgram(unsigned int program);
 }
 
 #endif //EXPLORATION_SHADER_H
