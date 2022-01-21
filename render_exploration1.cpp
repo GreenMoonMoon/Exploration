@@ -42,13 +42,6 @@ int main() {
     //Register resize function
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    //Set geometry
-//    float vertices[] = {
-//            -0.5f, -0.5f, 0.0f, // left
-//            0.5f, -0.5f, 0.0f, // right
-//            0.0f,  0.5f, 0.0f  // top
-//    };
-
     //Shader
     unsigned int shaderProgram = LoadShader(
             "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
@@ -58,22 +51,6 @@ int main() {
         glfwTerminate();
         return -1;
     }
-
-//    //Vertex buffer object VBO
-//    unsigned int vbo;
-//    glGenBuffers(1, &vbo);
-//
-//    unsigned int vao;
-//    glGenVertexArrays(1, &vao);
-//
-//    glBindVertexArray(vao);
-//
-//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-//
-//    //Set the attribute in the glsl
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr); //Setup layout(location = 0)
-//    glEnableVertexAttribArray(0);
 
     Mesh mesh {};
     mesh.program = shaderProgram;
