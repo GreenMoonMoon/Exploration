@@ -54,7 +54,6 @@ int main() {
 
     Mesh mesh {};
     mesh.program = shaderProgram;
-    mesh.vertexCount = 3;
 
     while (!glfwWindowShouldClose(window)) {
         //input
