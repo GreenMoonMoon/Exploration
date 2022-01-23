@@ -7,7 +7,7 @@
 
 #include "glad/gl.h"
 
-#include "shader.h"
+#include "material.h"
 
 namespace Expl {
     unsigned int LoadShader(const char* vertexFile, const char* fragmentFile) {
@@ -82,5 +82,16 @@ namespace Expl {
             return false;
         }
         return true;
+    }
+
+    Material::Material() {
+        program = LoadShader(
+                "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
+                "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
+        );
+    }
+
+    Material::Material(const char *vertexPath, const char *fragmentPath) {
+        program = LoadShader(vertexPath, fragmentPath);
     }
 }

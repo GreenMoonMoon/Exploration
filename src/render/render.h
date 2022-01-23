@@ -5,7 +5,7 @@
 #ifndef EXPLORATION_RENDER_H
 #define EXPLORATION_RENDER_H
 
-#include "shader.h"
+#include "material.h"
 #include "model.h"
 
 #endif //EXPLORATION_RENDER_H
