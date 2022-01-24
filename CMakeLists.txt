@@ -22,7 +22,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(
         RenderExpl1_SOURCE_FILES
         render_exploration1.cpp
-        src/render/material.cpp
+
+        src/render/shader.cpp
+        src/render/model.cpp
 
         external/glad/src/gl.c
 )
@@ -34,7 +36,9 @@ target_link_libraries(RenderExpl1 glfw)
 set(
         RenderExpl2_SOURCE_FILES
         render_exploration2.cpp
-        src/render/material.cpp
+
+        src/render/shader.cpp
+        src/render/model.cpp
 
         external/glad/src/gl.c
 )

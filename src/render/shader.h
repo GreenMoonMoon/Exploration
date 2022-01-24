@@ -1,19 +1,24 @@
 //
 // Created by MoonMoon on 2022-01-19.
 //
+#include <fstream>
 
 #ifndef EXPLORATION_MATERIAL_H
 #define EXPLORATION_MATERIAL_H
 
 namespace Expl {
 
-    class Material {
+    class Shader {
     public:
-        unsigned int program;
+        unsigned int glProgram;
+        int tintUniformLocation;
 
     public:
-        Material();
-        Material(const char* vertexPath, const char* fragmentPath);
+        Shader();
+
+        Shader(const char* vertexPath, const char* fragmentPath);
+
+        void SetUniformLocations();
     };
 
     unsigned int LoadShader(const char* vertexFile, const char* fragmentFile);

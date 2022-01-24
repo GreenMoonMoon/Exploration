@@ -3,7 +3,7 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
-#include "src/render/material.h"
+#include "src/render/shader.h"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);

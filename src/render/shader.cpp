@@ -1,16 +1,15 @@
 //
 // Created by MoonMoon on 2022-01-19.
 //
-#include <fstream>
 #include <string>
 #include <iostream>
 
 #include "glad/gl.h"
 
-#include "material.h"
+#include "shader.h"
 
 namespace Expl {
-    unsigned int LoadShader(const char* vertexFile, const char* fragmentFile) {
+    unsigned int LoadShader(const char *vertexFile, const char *fragmentFile) {
         std::string vertexSource;
         readFile(vertexSource, vertexFile);
 
@@ -26,14 +25,14 @@ namespace Expl {
         const char *vertex_c_str = vertexSource.c_str();
         glShaderSource(vertexShader, 1, &vertex_c_str, nullptr);
         glCompileShader(vertexShader);
-        if(!checkShader(vertexShader)) return -1;
+        if (!checkShader(vertexShader)) return -1;
 
         unsigned int fragmentShader;
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         const char *fragment_c_str = fragmentSource.c_str();
         glShaderSource(fragmentShader, 1, &fragment_c_str, nullptr);
         glCompileShader(fragmentShader);
-        if(!checkShader(fragmentShader)) return -1;
+        if (!checkShader(fragmentShader)) return -1;
 
         unsigned int shaderProgram;
         shaderProgram = glCreateProgram();
@@ -84,14 +83,20 @@ namespace Expl {
         return true;
     }
 
-    Material::Material() {
-        program = LoadShader(
+    Shader::Shader() {
+        glProgram = LoadShader(
                 "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
                 "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
         );
+        SetUniformLocations();
     }
 
-    Material::Material(const char *vertexPath, const char *fragmentPath) {
-        program = LoadShader(vertexPath, fragmentPath);
+    Shader::Shader(const char *vertexPath, const char *fragmentPath) {
+        glProgram = LoadShader(vertexPath, fragmentPath);
+        SetUniformLocations();
+    }
+
+    void Shader::SetUniformLocations() {
+        tintUniformLocation = glGetUniformLocation(glProgram, "tint");
     }
 }

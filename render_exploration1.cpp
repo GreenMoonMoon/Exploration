@@ -42,15 +42,14 @@ int main() {
     //Register resize function
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    //Material
-    Material material = Material(
+    //Shader
+    Expl::Shader material = Shader(
             "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
             "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
     );
 
-    Mesh mesh{};
-    mesh.SetMaterial(shaderProgram);
-    mesh.tintUniformLocation = glGetUniformLocation(mesh.program, "tint");
+    Expl::Mesh mesh{};
+    mesh.SetMaterial(material);
 
     while (!glfwWindowShouldClose(window)) {
         //input
