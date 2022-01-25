@@ -49,7 +49,7 @@ int main() {
     );
 
     Expl::Mesh mesh{};
-    mesh.SetMaterial(material);
+    mesh.SetShader(material);
 
     while (!glfwWindowShouldClose(window)) {
         //input

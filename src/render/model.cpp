@@ -48,15 +48,17 @@ namespace Expl {
     }
 
     void Mesh::Draw() const {
-        glUseProgram(material.glProgram);
-        glUniform3f(material.tintUniformLocation, 0.0f, 1.0f, 0.0f);
+//        glUseProgram(material.glProgram);
+        shader.Use();
+//        glUniform3f(material.tintUniformLocation, 0.0f, 1.0f, 0.0f);
+        shader.SetVectorUniform("tint", 0.0f, 1.0f, 0.0f);
 
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, nullptr);
         glBindVertexArray(0);
     }
 
-    void Mesh::SetMaterial(Shader mat) {
-        material = mat;
+    void Mesh::SetShader(Shader inShader) {
+        shader = inShader;
     }
 }

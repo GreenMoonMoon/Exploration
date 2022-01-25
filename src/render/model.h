@@ -17,14 +17,14 @@ namespace Expl {
         int vertexCount;
         int elementCount;
 
-        Shader material;
+        Shader shader;
 
     public:
         Mesh();
 
         void Draw() const;
 
-        void SetMaterial(Shader material);
+        void SetShader(Shader inShader);
     };
 
 }

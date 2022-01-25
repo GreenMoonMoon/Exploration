@@ -19,6 +19,10 @@ namespace Expl {
         Shader(const char* vertexPath, const char* fragmentPath);
 
         void SetUniformLocations();
+
+        void SetVectorUniform(char* name, float a, float b, float c) const;
+
+        void Use() const;
     };
 
     unsigned int LoadShader(const char* vertexFile, const char* fragmentFile);
