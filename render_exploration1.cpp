@@ -7,6 +7,7 @@
 #include "GLFW/glfw3.h"
 
 #include "src/render/render.h"
+#include "src/model.h"
 
 using namespace Expl;
 

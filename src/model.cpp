@@ -3,6 +3,7 @@
 //
 
 #include "model.h"
+#include "loader.h"
 
 namespace Expl {
     Mesh::Mesh() {
@@ -12,25 +13,25 @@ namespace Expl {
                 -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left
                 -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f   // top left
         };
-        unsigned int indices[] = {  // note that we start from 0!
-                0, 1, 3,  // first Triangle
-                1, 2, 3   // second Triangle
+        unsigned int indices[] = {
+                0, 1, 3,
+                1, 2, 3
         };
 
-        vertexCount = 4;
-        elementCount = 6;
+        VertexCount = 4;
+        ElementCount = 6;
 
         //Generate buffers
-        glGenBuffers(1, &vbo);
-        glGenBuffers(1, &ebo);
-        glGenVertexArrays(1, &vao);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &EBO);
+        glGenVertexArrays(1, &VAO);
 
-        glBindVertexArray(vao); //Bind vertex array buffer
+        glBindVertexArray(VAO); //Bind vertex array buffer
 
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
 
         //Set the attribute in the glsl
@@ -45,20 +46,13 @@ namespace Expl {
         glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        Mode = GL_TRIANGLES;
     }
 
-    void Mesh::Draw() const {
-//        glUseProgram(material.glProgram);
-        shader.Use();
-//        glUniform3f(material.tintUniformLocation, 0.0f, 1.0f, 0.0f);
-        shader.SetVectorUniform("tint", 0.0f, 1.0f, 0.0f);
-
-        glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, nullptr);
-        glBindVertexArray(0);
-    }
-
-    void Mesh::SetShader(Shader inShader) {
-        shader = inShader;
+    Mesh LoadMesh(const char* filePath) {
+        GLTFLoader loader{};
+        loader.LoadFile(filePath);
+        return Mesh();
     }
 }

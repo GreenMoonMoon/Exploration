@@ -100,7 +100,7 @@ namespace Expl {
         tintUniformLocation = glGetUniformLocation(glProgram, "tint");
     }
 
-    void Shader::SetVectorUniform(char* name, float a, float b, float c) const {
+    void Shader::SetVectorUniform(const char* name, float a, float b, float c) const {
         glUniform3f(glGetUniformLocation(glProgram, name), a, b, c);
     }
 

@@ -3,8 +3,6 @@
 //
 #include <vector>
 
-#include "raylib.h"
-
 #include "src/physic/particles.h"
 
 

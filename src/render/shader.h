@@ -20,7 +20,7 @@ namespace Expl {
 
         void SetUniformLocations();
 
-        void SetVectorUniform(char* name, float a, float b, float c) const;
+        void SetVectorUniform(const char* name, float a, float b, float c) const;
 
         void Use() const;
     };
