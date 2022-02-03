@@ -35,12 +35,11 @@ FetchContent_MakeAvailable(glfw)
 set(CMAKE_CXX_STANDARD 20)
 
 # Render Exploration 1
-set(
-        RenderExpl1_SOURCE_FILES
+set(RenderExpl1_SOURCE_FILES
         render_exploration1.cpp
 
         src/render/shader.cpp
-        src/model.cpp
+        src/geometry.cpp
 
         external/glad/src/gl.c
 )
@@ -50,12 +49,11 @@ target_include_directories(RenderExpl1 PUBLIC "external/glad/include" ${tinygltf
 target_link_libraries(RenderExpl1 glfw)
 
 # Render Exploration 2
-set(
-        RenderExpl2_SOURCE_FILES
+set(RenderExpl2_SOURCE_FILES
         render_exploration2.cpp
 
         src/render/shader.cpp
-        src/model.cpp
+        src/geometry.cpp
 
         external/glad/src/gl.c
 )
@@ -66,6 +64,16 @@ target_link_libraries(RenderExpl2 glfw)
 
 add_executable(PhysicExpl1 physic_exploration1.cpp src/physic/particles.cpp)
 target_link_libraries(PhysicExpl1 raylib)
+
+set(RessourceTool_SOURCE_FILES
+        resource_tool.cpp
+        src/geometry.cpp
+
+        external/glad/src/gl.c
+)
+add_executable(RessourceTool ${RessourceTool_SOURCE_FILES})
+target_include_directories(RessourceTool PUBLIC "external/glad/include" ${tinygltf_SOURCE_DIR})
+target_link_libraries(RessourceTool glfw)
 
 #TESTS
 add_subdirectory(tests)

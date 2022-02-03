@@ -3,7 +3,7 @@
 //
 
 #include "glad/gl.h"
-#include "../model.h"
+#include "../geometry.h"
 
 #ifndef EXPLORATION_RENDERER_H
 #define EXPLORATION_RENDERER_H
