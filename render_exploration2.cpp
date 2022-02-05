@@ -15,6 +15,10 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 void ProcessInput(GLFWwindow *window);
 
+GLenum glCheckError_(const char *file, int line);
+
+#define glCheckError() glCheckError_(__FILE__, __LINE__)
+
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -39,19 +43,20 @@ int main() {
     }
 
     glViewport(0, 0, 800, 600);
-    Renderer renderer {};
 
 
     //Register resize function
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     //Shader
-    Expl::Shader shader = Shader(
+    Shader shader = Shader(
             "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
             "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
     );
 
-    Mesh mesh = LoadMesh("C:/Users/josue/CLionProjects/PhysicExploration/resources/models/suzanne.gltf");
+    MeshResource res = MeshResource::Quad();
+    Mesh mesh = Renderer::LoadMeshResource(res);
+
 
     while (!glfwWindowShouldClose(window)) {
         //input
@@ -61,7 +66,8 @@ int main() {
         glClearColor(0.55f, 0.55f, 0.55f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderer.DrawMesh(mesh, shader);
+        Renderer::DrawMesh(mesh, shader);
+        glCheckError();
 
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -84,4 +90,38 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 void ProcessInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
+GLenum glCheckError_(const char *file, int line) {
+    GLenum errorCode;
+    while (errorCode = glGetError(), errorCode != GL_NO_ERROR) {
+        std::string error;
+        switch (errorCode) {
+            case GL_INVALID_ENUM:
+                error = "INVALID_ENUM";
+                break;
+            case GL_INVALID_VALUE:
+                error = "INVALID_VALUE";
+                break;
+            case GL_INVALID_OPERATION:
+                error = "INVALID_OPERATION";
+                break;
+            case GL_STACK_OVERFLOW:
+                error = "STACK_OVERFLOW";
+                break;
+            case GL_STACK_UNDERFLOW:
+                error = "STACK_UNDERFLOW";
+                break;
+            case GL_OUT_OF_MEMORY:
+                error = "OUT_OF_MEMORY";
+                break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION:
+                error = "INVALID_FRAMEBUFFER_OPERATION";
+                break;
+            default:
+                break;
+        }
+        std::cout << error << " | " << file << " (" << line << ")" << '\n';
+    }
+    return errorCode;
 }

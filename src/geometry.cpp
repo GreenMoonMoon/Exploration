@@ -2,61 +2,97 @@
 // Created by MoonMoon on 2022-01-23.
 //
 #include <fstream>
-
+#include <iostream>
 
 #include "glad/gl.h"
 #include "geometry.h"
 
 namespace Expl {
+    MeshResource::MeshResource() {
+        vertices = std::vector<float>();
+        indices = std::vector<unsigned int>();
+    }
 
-    MeshResource::MeshResource(std::initializer_list<float> vertices, std::initializer_list<unsigned int> indices)
-            : vertices(vertices), indices(indices) {}
+    MeshResource::MeshResource(const char* filePath) {
+        path = filePath;
+    }
+
+    MeshResource::MeshResource(std::initializer_list<float> inVertices, std::initializer_list<unsigned int> inIndices)
+            : vertices(inVertices), indices(inIndices) {}
+
+    MeshResource::MeshResource(std::vector<float> inVertices, std::vector<unsigned int> inIndices) {
+        vertices = std::move(inVertices);
+        indices = std::move(inIndices);
+    }
 
     void MeshResource::Serialize() {
         if (!path) return;
         std::ofstream out;
         out.open(path, std::ios::binary);
-        if(!out.is_open()) return;
+        if (!out.is_open()) return;
         size_t counts[2] = {vertices.size(), indices.size()};
 
         out.write(reinterpret_cast<char *>(counts), 2 * sizeof(size_t));
-        out.write(reinterpret_cast<char *>(vertices.data()), vertices.size());
-        out.write(reinterpret_cast<char *>(indices.data()), indices.size());
+        out.write(reinterpret_cast<char *>(vertices.data()), vertices.size() * 4);
+        out.write(reinterpret_cast<char *>(indices.data()), indices.size() * 4);
 
         out.close();
     }
 
     void MeshResource::Deserialize() {
+        if (!path) return;
+        std::ifstream in;
+        in.open(path, std::ios::binary);
+        if (!in.is_open()) return;
 
+        size_t counts[2];
+        in.read(reinterpret_cast<char *>(&counts), 2 * sizeof(size_t));
+
+
+        vertices.resize(counts[0]);
+        indices.resize(counts[1]);
+
+        in.read(reinterpret_cast<char *>(vertices.data()), counts[0] * sizeof(float));
+        in.read(reinterpret_cast<char *>(indices.data()), counts[1] * sizeof(int));
+
+        std::cout << "vertex count: " << counts[0] << "\n{";
+        for (float vertex : vertices)
+            std::cout << ' ' << vertex;
+        std::cout << "}\n";
+
+        std::cout << "index count: " << counts[1] << "\n{";
+        for(unsigned int index: indices)
+            std::cout << ' ' << index;
+        std::cout << "}\n";
     }
 
-    void Mesh::LoadGL() {
-        //Generate buffers
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
-        glGenVertexArrays(1, &VAO);
+    //Built-in geometries
+    MeshResource MeshResource::Quad(float x, float y, float z) {
+        return MeshResource(
+                {
+                        -1.0f + x, -1.0f + y, 0.0f + z,
+                        -1.0f + x, 1.0f + y, 0.0f + z,
+                        1.0f + x, 1.0f + y, 0.0f + z,
+                        1.0f + x, -1.0f + y, 0.0f + z
+                },
+                {0, 1, 2, 2, 3, 0}
+        );
+    };
 
-        glBindVertexArray(VAO); //Bind vertex array buffer
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, res.vertices.size(), res.vertices.data(), GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, res.indices.size(), res.indices.data(), GL_STATIC_DRAW);
-
-        //Set the attribute in the glsl
-        //Setup layout(location = 0)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * (int) sizeof(float), nullptr);
-        glEnableVertexAttribArray(0);
-        //Setup layout(location = 1)
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * (int) sizeof(float), (void *) (3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
-
-        //Unbind buffers
-        glBindVertexArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-        Mode = GL_TRIANGLES;
+    MeshResource MeshResource::Cube(float x, float y, float z) {
+        return MeshResource(
+                {
+                        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   // top right
+                        1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+                        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  // bottom right
+                        0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+                        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // bottom left
+                        0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+                        -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, // top left
+                        1.0f, 0.0f, 1.0, 0.0f, 0.0f, 0.0f
+                },
+                {
+                        0, 1, 3, 1, 2, 3
+                });
     }
 }

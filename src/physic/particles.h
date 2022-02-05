@@ -3,7 +3,7 @@
 //
 #include <vector>
 
-#include "../math/expl_math.h"
+#include "../math/vector.h"
 
 #ifndef EXPLORATION_PARTICLES_H
 #define EXPLORATION_PARTICLES_H

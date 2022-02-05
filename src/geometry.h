@@ -11,33 +11,21 @@
 
 namespace Expl {
     struct MeshResource : public Resource {
-        MeshResource(std::initializer_list<float> vertices, std::initializer_list<unsigned int> indices);
+        MeshResource();
+        explicit MeshResource(const char* filePath);
+        MeshResource(std::initializer_list<float> inVertices, std::initializer_list<unsigned int> inIndices);
+        MeshResource(std::vector<float> inVertices, std::vector<unsigned int> inIndices);
 
         std::vector<float> vertices{};
         std::vector<unsigned int> indices{};
 
         void Serialize() override;
         void Deserialize() override;
+
+        //Built-in geometries
+        static MeshResource Quad(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+        static MeshResource Cube(float x = 0.0f, float y = 0.0f, float z = 0.0f);
     };
-
-    class Mesh {
-    public:
-        MeshResource res;
-        unsigned int VBO;
-        unsigned int VAO;
-        unsigned int EBO;
-        int ElementCount;
-        int VertexCount;
-        int Mode;
-
-    public:
-        Mesh();
-
-        void LoadGL();
-    };
-
-    Mesh LoadMesh(const char *filePath);
-
 }
 
 #endif //EXPLORATION_MODEL_H

@@ -11,39 +11,50 @@
 
 using namespace Expl;
 
-enum class ResourceInput{
+enum class ResourceInput {
     Builtin,
     File
 };
 
-void save(ResourceInput inType, const char* resourceName, const char* outFilePath);
+void save(ResourceInput inType, const char *resourceName, const char *outFilePath);
 
-int main(int argc, char* argv[]) {
+void load(ResourceInput inType, const char *ressourceName, const char *inFilePath);
+
+int main(int argc, char *argv[]) {
     //Tool Mode
     int mode = std::string("-save").compare(argv[1]);
     std::cout << "mode: " << mode << '\n';
 
     //Input
-    ResourceInput inType = ResourceInput(std::string("-builtin").compare(argv[2]));
-    const char* resourceName = argv[3];
+    ResourceInput inType = (argv[2] == std::string("-builtin")) ? ResourceInput::Builtin : ResourceInput::File;
+    const char *resourceName = argv[3];
     std::cout << "type: " << int(inType) << "\tname: " << resourceName << '\n';
 
     //Output
-    //Ignore the output command for now, assume file path.
-    const char* outFilePath = argv[5];
-    std::cout << "output file : " << outFilePath << '\n';
+    if (mode == 0) {
+        const char *outFilePath = argv[5];
+        std::cout << "output file : " << outFilePath << '\n';
 
-    if(mode == 0){
         save(inType, resourceName, outFilePath);
     } else {
-//        load();
+        const char *inFilePath = argv[5];
+        std::cout << "input file : " << inFilePath << '\n';
+
+        load(inType, resourceName, inFilePath);
     }
 }
 
-void save(ResourceInput inType, const char* resourceName, const char* outFilePath){
-    if(inType == ResourceInput::Builtin){
+void save(ResourceInput inType, const char *resourceName, const char *outFilePath) {
+    if (inType == ResourceInput::Builtin) {
         MeshResource res = cubeMeshResource;
         res.path = outFilePath;
         res.Serialize();
+    }
+}
+
+void load(ResourceInput inType, const char *ressourceName, const char *inFilePath) {
+    if (inType == ResourceInput::File) {
+        MeshResource res{inFilePath};
+        res.Deserialize();
     }
 }

@@ -4,10 +4,10 @@
 #include <cmath>
 #include <tuple>
 
-#ifndef EXPLORATION_EXPL_MATH_H
-#define EXPLORATION_EXPL_MATH_H
+#ifndef EXPLORATION_VECTOR_H
+#define EXPLORATION_VECTOR_H
 
-namespace Exploration {
+namespace Expl {
 
 // 2-dimension vector
 
@@ -82,4 +82,4 @@ namespace Exploration {
     };
 }
 
-#endif //EXPLORATION_EXPL_MATH_H
+#endif //EXPLORATION_VECTOR_H

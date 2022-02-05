@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/math/expl_math.h"
+#include "../src/math/vector.h"
 
 
 using namespace Exploration;
