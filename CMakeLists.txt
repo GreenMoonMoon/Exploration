@@ -25,24 +25,30 @@ set(TINYGLTF_HEADER_ONLY ON CACHE INTERNAL "" FORCE)
 set(TINYGLTF_INSTALL OFF CACHE INTERNAL "" FORCE)
 
 FetchContent_GetProperties(tinygltf)
-if(NOT tinygltf_POPULATED)
+if (NOT tinygltf_POPULATED)
     FetchContent_Populate(tinygltf)
-endif()
+endif ()
 add_subdirectory(${tinygltf_SOURCE_DIR})
 
 FetchContent_MakeAvailable(glfw)
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(EXPL_SOURCE_FILES
+        src/render/shader.cpp
+        src/render/renderer.cpp
+        src/geometry.cpp
+        src/texture.cpp
+        )
+
 # Render Exploration 1
 set(RenderExpl1_SOURCE_FILES
         render_exploration1.cpp
 
-        src/render/shader.cpp
-        src/geometry.cpp
+        ${EXPL_SOURCE_FILES}
 
         external/glad/src/gl.c
-)
+        )
 
 add_executable(RenderExpl1 ${RenderExpl1_SOURCE_FILES})
 target_include_directories(RenderExpl1 PUBLIC "external/glad/include" ${tinygltf_SOURCE_DIR})
@@ -52,11 +58,10 @@ target_link_libraries(RenderExpl1 glfw)
 set(RenderExpl2_SOURCE_FILES
         render_exploration2.cpp
 
-        src/render/shader.cpp
-        src/geometry.cpp
+        ${EXPL_SOURCE_FILES}
 
         external/glad/src/gl.c
-)
+        )
 
 add_executable(RenderExpl2 ${RenderExpl2_SOURCE_FILES})
 target_include_directories(RenderExpl2 PUBLIC "external/glad/include" ${tinygltf_SOURCE_DIR})
@@ -70,7 +75,7 @@ set(RessourceTool_SOURCE_FILES
         src/geometry.cpp
 
         external/glad/src/gl.c
-)
+        )
 add_executable(RessourceTool ${RessourceTool_SOURCE_FILES})
 target_include_directories(RessourceTool PUBLIC "external/glad/include" ${tinygltf_SOURCE_DIR})
 target_link_libraries(RessourceTool glfw)

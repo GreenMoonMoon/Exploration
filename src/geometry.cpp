@@ -1,7 +1,6 @@
 //
 // Created by MoonMoon on 2022-01-23.
 //
-#include <fstream>
 #include <iostream>
 
 #include "glad/gl.h"
@@ -33,8 +32,8 @@ namespace Expl {
         size_t counts[2] = {vertices.size(), indices.size()};
 
         out.write(reinterpret_cast<char *>(counts), 2 * sizeof(size_t));
-        out.write(reinterpret_cast<char *>(vertices.data()), vertices.size() * 4);
-        out.write(reinterpret_cast<char *>(indices.data()), indices.size() * 4);
+        out.write(reinterpret_cast<char *>(vertices.data()), static_cast<std::streamsize>(vertices.size() * sizeof(float)));
+        out.write(reinterpret_cast<char *>(indices.data()), static_cast<std::streamsize>(indices.size() * sizeof(int)));
 
         out.close();
     }
@@ -52,8 +51,8 @@ namespace Expl {
         vertices.resize(counts[0]);
         indices.resize(counts[1]);
 
-        in.read(reinterpret_cast<char *>(vertices.data()), counts[0] * sizeof(float));
-        in.read(reinterpret_cast<char *>(indices.data()), counts[1] * sizeof(int));
+        in.read(reinterpret_cast<char *>(vertices.data()), static_cast<std::streamsize>(counts[0] * sizeof(float)));
+        in.read(reinterpret_cast<char *>(indices.data()), static_cast<std::streamsize>(counts[1] * sizeof(int)));
 
         std::cout << "vertex count: " << counts[0] << "\n{";
         for (float vertex : vertices)
@@ -67,7 +66,7 @@ namespace Expl {
     }
 
     //Built-in geometries
-    MeshResource MeshResource::Quad(float x, float y, float z) {
+    [[maybe_unused]] MeshResource MeshResource::Quad(float x, float y, float z) {
         return MeshResource(
                 {
                         -1.0f + x, -1.0f + y, 0.0f + z,
@@ -79,7 +78,7 @@ namespace Expl {
         );
     };
 
-    MeshResource MeshResource::Cube(float x, float y, float z) {
+    [[maybe_unused]] MeshResource MeshResource::Cube(float x, float y, float z) {
         return MeshResource(
                 {
                         0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   // top right

@@ -16,6 +16,10 @@ int main() {
             "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
             "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
     );
+    shader.SetVec2Uniform("resolution", 800.0f,600.0f);
+
+//    TextureTResource tex{"C:/Users/josue/CLionProjects/PhysicExploration/resources/textures/color_grid.png"};
+
 
     auto res = MeshResource::Quad();
     auto mesh = Renderer::LoadMeshResource(res);

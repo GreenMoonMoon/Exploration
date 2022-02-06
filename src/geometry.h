@@ -10,7 +10,7 @@
 #define EXPLORATION_MODEL_H
 
 namespace Expl {
-    struct MeshResource : public Resource {
+    struct MeshResource : Resource {
         MeshResource();
         explicit MeshResource(const char* filePath);
         MeshResource(std::initializer_list<float> inVertices, std::initializer_list<unsigned int> inIndices);
@@ -24,7 +24,8 @@ namespace Expl {
 
         //Built-in geometries
         static MeshResource Quad(float x = 0.0f, float y = 0.0f, float z = 0.0f);
-        static MeshResource Cube(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+
+        [[maybe_unused]] static MeshResource Cube(float x = 0.0f, float y = 0.0f, float z = 0.0f);
     };
 }
 

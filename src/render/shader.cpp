@@ -104,7 +104,14 @@ namespace Expl {
         glUniform3f(glGetUniformLocation(glProgram, name), a, b, c);
     }
 
+
+
     void Shader::Use() const{
         glUseProgram(glProgram);
+    }
+
+    void Shader::SetVec2Uniform(const char *name, float a, float b) const {
+        glUseProgram(glProgram);
+        glUniform2f(glGetUniformLocation(glProgram, name), a, b);
     }
 }

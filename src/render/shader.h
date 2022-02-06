@@ -22,6 +22,8 @@ namespace Expl {
 
         void SetVectorUniform(const char* name, float a, float b, float c) const;
 
+        void SetVec2Uniform(const char* name, float a, float b) const;
+
         void Use() const;
     };
 
