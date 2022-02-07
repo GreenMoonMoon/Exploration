@@ -16,18 +16,18 @@ namespace Expl {
     public:
         Shader();
 
-        Shader(const char* vertexPath, const char* fragmentPath);
+        Shader(const char *vertexPath, const char *fragmentPath);
 
         void SetUniformLocations();
 
-        void SetVectorUniform(const char* name, float a, float b, float c) const;
+        void SetVectorUniform(const char *name, float a, float b, float c) const;
 
-        void SetVec2Uniform(const char* name, float a, float b) const;
+        void SetVec2Uniform(const char *name, float a, float b) const;
 
         void Use() const;
     };
 
-    unsigned int LoadShader(const char* vertexFile, const char* fragmentFile);
+    unsigned int LoadShader(const char *vertexFile, const char *fragmentFile);
 
     void readFile(std::string &str, const char *filePath);
 

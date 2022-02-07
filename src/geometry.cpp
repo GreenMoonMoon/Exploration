@@ -7,12 +7,7 @@
 #include "geometry.h"
 
 namespace Expl {
-    MeshResource::MeshResource() {
-        vertices = std::vector<float>();
-        indices = std::vector<unsigned int>();
-    }
-
-    MeshResource::MeshResource(const char* filePath) {
+    MeshResource::MeshResource(const char *filePath) {
         path = filePath;
     }
 
@@ -32,7 +27,8 @@ namespace Expl {
         size_t counts[2] = {vertices.size(), indices.size()};
 
         out.write(reinterpret_cast<char *>(counts), 2 * sizeof(size_t));
-        out.write(reinterpret_cast<char *>(vertices.data()), static_cast<std::streamsize>(vertices.size() * sizeof(float)));
+        out.write(reinterpret_cast<char *>(vertices.data()),
+                  static_cast<std::streamsize>(vertices.size() * sizeof(float)));
         out.write(reinterpret_cast<char *>(indices.data()), static_cast<std::streamsize>(indices.size() * sizeof(int)));
 
         out.close();
@@ -55,12 +51,12 @@ namespace Expl {
         in.read(reinterpret_cast<char *>(indices.data()), static_cast<std::streamsize>(counts[1] * sizeof(int)));
 
         std::cout << "vertex count: " << counts[0] << "\n{";
-        for (float vertex : vertices)
+        for (float vertex: vertices)
             std::cout << ' ' << vertex;
         std::cout << "}\n";
 
         std::cout << "index count: " << counts[1] << "\n{";
-        for(unsigned int index: indices)
+        for (unsigned int index: indices)
             std::cout << ' ' << index;
         std::cout << "}\n";
     }
@@ -69,10 +65,10 @@ namespace Expl {
     [[maybe_unused]] MeshResource MeshResource::Quad(float x, float y, float z) {
         return MeshResource(
                 {
-                        -1.0f + x, -1.0f + y, 0.0f + z,
-                        -1.0f + x, 1.0f + y, 0.0f + z,
-                        1.0f + x, 1.0f + y, 0.0f + z,
-                        1.0f + x, -1.0f + y, 0.0f + z
+                        -1.0f + x, -1.0f + y, 0.0f + z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                        -1.0f + x, 1.0f + y, 0.0f + z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                        1.0f + x, 1.0f + y, 0.0f + z, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+                        1.0f + x, -1.0f + y, 0.0f + z, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
                 },
                 {0, 1, 2, 2, 3, 0}
         );

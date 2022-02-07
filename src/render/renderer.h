@@ -6,6 +6,7 @@
 #include "glad/gl.h"
 #include "GLFW/glfw3.h"
 #include "../geometry.h"
+#include "../texture.h"
 
 #ifndef EXPLORATION_RENDERER_H
 #define EXPLORATION_RENDERER_H
@@ -19,6 +20,12 @@ namespace Expl {
         int VertexCount = 0;
         int IndexCount = 0;
         int Mode = -1;
+    };
+
+    struct Texture {
+        unsigned int ID;
+
+        void Use() const;
     };
 
     class Renderer {
@@ -40,6 +47,8 @@ namespace Expl {
 
         static Mesh LoadMeshResource(MeshResource &res);
 
+        static Texture LoadTextureResource(TextureResource &res);
+
         static void DrawMesh(Mesh &mesh, Shader &shader);
     };
 
@@ -48,6 +57,8 @@ namespace Expl {
 
     GLenum glCheckError_(const char *file, int line);
     #define glCheckError() glCheckError_(__FILE__, __LINE__)
+
+    void setLayoutLocations(MeshResource &res);
 }
 
 #endif //EXPLORATION_RENDERER_H

@@ -79,14 +79,8 @@ namespace Expl {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(res.indices.size() * sizeof(int)),
                      res.indices.data(), GL_STATIC_DRAW);
 
-        //Set the attribute in the glsl
-        //Setup layout(location = 0)
-//        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * (int) sizeof(float), nullptr);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-        glEnableVertexAttribArray(0);
-//        //Setup layout(location = 1)
-//        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * (int) sizeof(float), (void *) (3 * sizeof(float)));
-//        glEnableVertexAttribArray(1);
+        //Bind vertex attributes
+        setLayoutLocations(res);
 
         //Unbind buffers
         glBindVertexArray(0);
@@ -112,6 +106,32 @@ namespace Expl {
         glBindVertexArray(mesh.VAO);
         glDrawElements(mesh.Mode, mesh.IndexCount, GL_UNSIGNED_INT, nullptr);
         glBindVertexArray(0);
+    }
+
+    Texture Renderer::LoadTextureResource(TextureResource &res) {
+        unsigned int texture;
+        glGenTextures(1, &texture);
+
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        //TODO handle failure
+        int type;
+        switch (res.numChannel) {
+            case(3): type = GL_RGB; break;
+            case(4): type = GL_RGBA; break;
+        }
+
+        glTexImage2D(GL_TEXTURE_2D, res.mipmap, GL_RGB, res.width, res.height, 0, type, GL_UNSIGNED_BYTE, res.data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        return Texture{
+            texture
+        };
     }
 
     void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
@@ -150,5 +170,23 @@ namespace Expl {
             std::cout << error << " | " << file << " (" << line << ")" << '\n';
         }
         return errorCode;
+    }
+
+    void setLayoutLocations(MeshResource &res) {
+        // Setup layout(location = 0): Vertex positions
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), nullptr);
+        glEnableVertexAttribArray(0);
+
+        // Setup layout(location = 1): UVs
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+
+        // Setup layout(location = 2) Vertex colors
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (5 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+    }
+
+    void Texture::Use() const {
+        glBindTexture(GL_TEXTURE_2D, ID);
     }
 }

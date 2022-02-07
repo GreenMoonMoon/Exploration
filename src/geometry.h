@@ -11,19 +11,21 @@
 
 namespace Expl {
     struct MeshResource : Resource {
-        MeshResource();
-        explicit MeshResource(const char* filePath);
-        MeshResource(std::initializer_list<float> inVertices, std::initializer_list<unsigned int> inIndices);
-        MeshResource(std::vector<float> inVertices, std::vector<unsigned int> inIndices);
-
         std::vector<float> vertices{};
         std::vector<unsigned int> indices{};
 
+        explicit MeshResource(const char *filePath);
+
+        MeshResource(std::initializer_list<float> inVertices, std::initializer_list<unsigned int> inIndices);
+
+        MeshResource(std::vector<float> inVertices, std::vector<unsigned int> inIndices);
+
         void Serialize() override;
+
         void Deserialize() override;
 
         //Built-in geometries
-        static MeshResource Quad(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+        [[maybe_unused]] static MeshResource Quad(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 
         [[maybe_unused]] static MeshResource Cube(float x = 0.0f, float y = 0.0f, float z = 0.0f);
     };
