@@ -5,6 +5,9 @@
 
 #include "glad/gl.h"
 #include "GLFW/glfw3.h"
+
+#include "render_element.h"
+
 #include "../geometry.h"
 #include "../texture.h"
 
@@ -12,21 +15,6 @@
 #define EXPLORATION_RENDERER_H
 
 namespace Expl {
-    struct Mesh {
-        Resource *resource = nullptr;
-        unsigned int VBO = 0;
-        unsigned int VAO = 0;
-        unsigned int EBO = 0;
-        int VertexCount = 0;
-        int IndexCount = 0;
-        int Mode = -1;
-    };
-
-    struct Texture {
-        unsigned int ID;
-
-        void Use() const;
-    };
 
     class Renderer {
     private:

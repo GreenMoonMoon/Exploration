@@ -89,7 +89,6 @@ namespace Expl {
 
         int mode = GL_TRIANGLES;
         return Mesh{
-                .resource = &res,
                 .VBO = vbo,
                 .VAO = vao,
                 .EBO = ebo,
@@ -184,9 +183,5 @@ namespace Expl {
         // Setup layout(location = 2) Vertex colors
         glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (5 * sizeof(float)));
         glEnableVertexAttribArray(2);
-    }
-
-    void Texture::Use() const {
-        glBindTexture(GL_TEXTURE_2D, ID);
     }
 }

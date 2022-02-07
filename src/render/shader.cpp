@@ -100,16 +100,29 @@ namespace Expl {
         tintUniformLocation = glGetUniformLocation(glProgram, "tint");
     }
 
-    void Shader::SetVectorUniform(const char* name, float a, float b, float c) const {
+    void Shader::SetVectorUniform(const char *name, float a, float b, float c) const {
         glUniform3f(glGetUniformLocation(glProgram, name), a, b, c);
     }
 
-    void Shader::Use() const{
+    void Shader::Use() const {
         glUseProgram(glProgram);
+
+        for (int i = 0; i < textureCount; i++) {
+            glActiveTexture(i);
+            glBindTexture(GL_TEXTURE_2D, textures[i]);
+        }
     }
 
     void Shader::SetVec2Uniform(const char *name, float a, float b) const {
         glUseProgram(glProgram);
         glUniform2f(glGetUniformLocation(glProgram, name), a, b);
+    }
+
+    void Shader::BindTexture(Texture texture, int textureUnit) {
+        if (textureUnit >= 0) {
+            textures[textureCount++] = texture.ID;
+        } else {
+            textures[textureUnit] = texture.ID;
+        }
     }
 }

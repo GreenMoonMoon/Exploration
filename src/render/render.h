@@ -8,5 +8,6 @@
 
 #include "shader.h"
 #include "renderer.h"
+#include "render_element.h"
 
 #endif //EXPLORATION_RENDER_H

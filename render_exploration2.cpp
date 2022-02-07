@@ -21,11 +21,12 @@ int main() {
     );
     shader.SetVec2Uniform("resolution", 800.0f,600.0f);
 
-    Texture texture{0};
+    Texture texture;
     {
         TextureResource tex{"C:/Users/josue/CLionProjects/PhysicExploration/resources/textures/color_grid.png"};
         texture = Renderer::LoadTextureResource(tex);
     }
+    shader.BindTexture(texture);
 
     auto res = MeshResource::Quad();
     auto mesh = Renderer::LoadMeshResource(res);
@@ -35,7 +36,6 @@ int main() {
 
         renderer.BeginDraw();
 
-        texture.Use();
         Renderer::DrawMesh(mesh, shader);
         Expl::glCheckError();
 
