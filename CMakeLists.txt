@@ -37,6 +37,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(EXPL_SOURCE_FILES
         src/render/shader.cpp
         src/render/renderer.cpp
+        src/render/gl_debug.cpp
         src/geometry.cpp
         src/texture.cpp
         )

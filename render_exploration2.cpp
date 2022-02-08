@@ -4,6 +4,7 @@
 #include "src/render/render.h"
 #include "src/geometry.h"
 #include "src/texture.h"
+#include "src/render/gl_debug.h"
 
 using Expl::Shader;
 using Expl::MeshResource;
@@ -26,7 +27,7 @@ int main() {
         TextureResource tex{"C:/Users/josue/CLionProjects/PhysicExploration/resources/textures/color_grid.png"};
         texture = Renderer::LoadTextureResource(tex);
     }
-    shader.BindTexture(texture);
+    shader.BindTexture("tex1", texture);
 
     auto res = MeshResource::Quad();
     auto mesh = Renderer::LoadMeshResource(res);
@@ -37,9 +38,9 @@ int main() {
         renderer.BeginDraw();
 
         Renderer::DrawMesh(mesh, shader);
-        Expl::glCheckError();
 
         renderer.EndDraw();
+//    Expl::glCheckError();
     }
 
     return 0;

@@ -84,7 +84,7 @@ namespace Expl {
     }
 
     Shader::Shader() {
-        glProgram = LoadShader(
+        ID = LoadShader(
                 "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
                 "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
         );
@@ -92,37 +92,37 @@ namespace Expl {
     }
 
     Shader::Shader(const char *vertexPath, const char *fragmentPath) {
-        glProgram = LoadShader(vertexPath, fragmentPath);
+        ID = LoadShader(vertexPath, fragmentPath);
         SetUniformLocations();
     }
 
     void Shader::SetUniformLocations() {
-        tintUniformLocation = glGetUniformLocation(glProgram, "tint");
+        tintUniformLocation = glGetUniformLocation(ID, "tint");
     }
 
     void Shader::SetVectorUniform(const char *name, float a, float b, float c) const {
-        glUniform3f(glGetUniformLocation(glProgram, name), a, b, c);
+        glUniform3f(glGetUniformLocation(ID, name), a, b, c);
     }
 
     void Shader::Use() const {
-        glUseProgram(glProgram);
+        glUseProgram(ID);
 
-        for (int i = 0; i < textureCount; i++) {
-            glActiveTexture(i);
+        for (int i = 0; i < count; i++) {
+            glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, textures[i]);
         }
     }
 
     void Shader::SetVec2Uniform(const char *name, float a, float b) const {
-        glUseProgram(glProgram);
-        glUniform2f(glGetUniformLocation(glProgram, name), a, b);
+        glUseProgram(ID);
+        glUniform2f(glGetUniformLocation(ID, name), a, b);
     }
 
-    void Shader::BindTexture(Texture texture, int textureUnit) {
-        if (textureUnit >= 0) {
-            textures[textureCount++] = texture.ID;
-        } else {
-            textures[textureUnit] = texture.ID;
-        }
+    void Shader::BindTexture(const char *name, Texture texture) {
+        glUseProgram(ID);
+        int location = glGetUniformLocation(ID, name);
+        textures[count] = texture.ID;
+        glUniform1i(location, count);
+        count++;
     }
 }

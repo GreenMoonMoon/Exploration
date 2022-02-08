@@ -13,9 +13,9 @@ namespace Expl {
     private:
         //TODO: Define the MAX number of Textures per shader as a compile flag to enable custom number per project.
         unsigned int textures[16]{0}; //NOTE: storing only the texture IDs instead of the Expl::Texture object.
-        int textureCount = 0;
+        int count = 0;
     public:
-        unsigned int glProgram = 0;
+        unsigned int ID = 0;
         int tintUniformLocation = -1;
 
     public:
@@ -29,7 +29,7 @@ namespace Expl {
 
         void SetVec2Uniform(const char *name, float a, float b) const;
 
-        void BindTexture(Texture texture, int textureUnit = -1);
+        void BindTexture(const char *name, Texture texture);
 
         void Use() const;
     };
