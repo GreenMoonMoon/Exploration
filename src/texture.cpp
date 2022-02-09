@@ -10,6 +10,7 @@
 
 namespace Expl{
     TextureResource::TextureResource(const char *filePath) {
+        stbi_set_flip_vertically_on_load(true);
         data = stbi_load(filePath, &width, &height, &numChannel, 0);
         if(data == nullptr){
             std::cerr << "Could not load " << filePath << '\n';

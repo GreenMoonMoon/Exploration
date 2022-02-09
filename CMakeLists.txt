@@ -16,6 +16,17 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_TAG 0.9.9.8
+)
+FetchContent_GetProperties(glm)
+if (NOT glm_POPULATED)
+    FetchContent_Populate(glm)
+endif ()
+add_subdirectory(${glm_SOURCE_DIR})
+
+FetchContent_Declare(
         tinygltf
         GIT_REPOSITORY https://github.com/syoyo/tinygltf.git
         GIT_TAG v2.5.0
@@ -52,7 +63,7 @@ set(RenderExpl1_SOURCE_FILES
         )
 
 add_executable(RenderExpl1 ${RenderExpl1_SOURCE_FILES})
-target_include_directories(RenderExpl1 PUBLIC "external/glad/include" ${tinygltf_SOURCE_DIR})
+target_include_directories(RenderExpl1 PUBLIC external/glad/include ${glm_SOURCE_DIR} ${tinygltf_SOURCE_DIR})
 target_link_libraries(RenderExpl1 glfw)
 
 # Render Exploration 2
@@ -65,7 +76,7 @@ set(RenderExpl2_SOURCE_FILES
         )
 
 add_executable(RenderExpl2 ${RenderExpl2_SOURCE_FILES})
-target_include_directories(RenderExpl2 PUBLIC "external/glad/include" ${tinygltf_SOURCE_DIR})
+target_include_directories(RenderExpl2 PUBLIC external/glad/include ${glm_SOURCE_DIR} ${tinygltf_SOURCE_DIR})
 target_link_libraries(RenderExpl2 glfw)
 
 add_executable(PhysicExpl1 physic_exploration1.cpp src/physic/particles.cpp)

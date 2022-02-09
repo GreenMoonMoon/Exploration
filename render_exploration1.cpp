@@ -6,7 +6,7 @@
 #include "glad/gl.h"
 #include "GLFW/glfw3.h"
 
-#include "src/render/render.h"
+#include "src/render/expl_render.h"
 #include "src/geometry.h"
 
 using namespace Expl;
