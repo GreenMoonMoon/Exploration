@@ -1,26 +1,23 @@
 //
-// Created by MoonMoon on 2022-01-23.
+// Created by MoonMoon on 2022-02-11.
 //
 #include <iostream>
+#include <fstream>
 
-#include "glad/gl.h"
-#include "geometry.h"
+#include "mesh.h"
+
+#include "obj_parser.h"
 
 namespace Expl {
-    MeshResource::MeshResource(const char *filePath) {
-        path = filePath;
+    MeshResource::MeshResource(std::initializer_list<float> vertices_, std::initializer_list<unsigned int> indices_)
+            : vertices(vertices_), indices(indices_) {}
+
+    MeshResource::MeshResource(std::vector<float> vertices_, std::vector<unsigned int> indices_) {
+        vertices = std::move(vertices_);
+        indices = std::move(indices_);
     }
 
-    MeshResource::MeshResource(std::initializer_list<float> inVertices, std::initializer_list<unsigned int> inIndices)
-            : vertices(inVertices), indices(inIndices) {}
-
-    MeshResource::MeshResource(std::vector<float> inVertices, std::vector<unsigned int> inIndices) {
-        vertices = std::move(inVertices);
-        indices = std::move(inIndices);
-    }
-
-    void MeshResource::Serialize() {
-        if (!path) return;
+    void MeshResource::Serialize(const std::filesystem::path &path) {
         std::ofstream out;
         out.open(path, std::ios::binary);
         if (!out.is_open()) return;
@@ -34,8 +31,7 @@ namespace Expl {
         out.close();
     }
 
-    void MeshResource::Deserialize() {
-        if (!path) return;
+    void MeshResource::Deserialize(const std::filesystem::path &path) {
         std::ifstream in;
         in.open(path, std::ios::binary);
         if (!in.is_open()) return;
@@ -90,4 +86,12 @@ namespace Expl {
                         0, 1, 3, 1, 2, 3
                 });
     }
+
+    /// Assume OBJ format for now TODO:Implement other format as needed, such as GLTF/GLB.
+    /// Load MeshResource objects for usage in with the renderer.
+    /// \param path File path
+    void MeshLoader::Load(const std::filesystem::path &path) {
+//        OBJparser parser{path};
+    }
 }
+

@@ -7,7 +7,7 @@
 #include "GLFW/glfw3.h"
 
 #include "src/render/expl_render.h"
-#include "src/geometry.h"
+#include "src/resource/mesh.h"
 
 using namespace Expl;
 

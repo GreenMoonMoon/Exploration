@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "glad/gl.h"
+#include "glm/gtc/type_ptr.hpp"
 
 #include "shader.h"
 
@@ -88,20 +89,10 @@ namespace Expl {
                 "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.vert",
                 "C:/Users/josue/CLionProjects/PhysicExploration/resources/shaders/basic.frag"
         );
-        SetUniformLocations();
     }
 
     Shader::Shader(const char *vertexPath, const char *fragmentPath) {
         ID = LoadShader(vertexPath, fragmentPath);
-        SetUniformLocations();
-    }
-
-    void Shader::SetUniformLocations() {
-        tintUniformLocation = glGetUniformLocation(ID, "tint");
-    }
-
-    void Shader::SetVectorUniform(const char *name, float a, float b, float c) const {
-        glUniform3f(glGetUniformLocation(ID, name), a, b, c);
     }
 
     void Shader::Use() const {
@@ -116,6 +107,11 @@ namespace Expl {
     void Shader::SetVec2Uniform(const char *name, float a, float b) const {
         glUseProgram(ID);
         glUniform2f(glGetUniformLocation(ID, name), a, b);
+    }
+
+    void Shader::SetMat4Uniform(const char *name, glm::mat4x4 mat4) const {
+        glUseProgram(ID);
+        glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(mat4));
     }
 
     void Shader::BindTexture(const char *name, Texture texture) {

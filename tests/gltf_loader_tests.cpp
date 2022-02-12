@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/loader/gltf.h"
+#include "../src/loader/model.h"
 #include
 
 using namespace Expl;

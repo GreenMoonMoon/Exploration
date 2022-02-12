@@ -3,6 +3,8 @@
 //
 #include <fstream>
 
+#include "glm/mat4x4.hpp"
+
 #include "render_element.h"
 
 #ifndef EXPLORATION_MATERIAL_H
@@ -23,11 +25,9 @@ namespace Expl {
 
         Shader(const char *vertexPath, const char *fragmentPath);
 
-        void SetUniformLocations();
-
-        void SetVectorUniform(const char *name, float a, float b, float c) const;
-
         void SetVec2Uniform(const char *name, float a, float b) const;
+
+        void SetMat4Uniform(const char* name, glm::mat4x4 mat4) const;
 
         void BindTexture(const char *name, Texture texture);
 

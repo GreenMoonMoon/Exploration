@@ -1,60 +1,54 @@
 //
 // Created by MoonMoon on 2022-01-30.
 //
-
-#include <fstream>
+#include <filesystem>
 #include <iostream>
 #include <string>
 
-#include "src/resource.h"
-#include "src/builtin_geometry.h"
+#include "src/resource/mesh.h"
 
 using namespace Expl;
 
-enum class ResourceInput {
-    Builtin,
-    File
+enum class ResourceType {
+    UNKNOWN,
+    MESH
 };
 
-void save(ResourceInput inType, const char *resourceName, const char *outFilePath);
+void load(const std::filesystem::path &path);
 
-void load(ResourceInput inType, const char *ressourceName, const char *inFilePath);
+void save(std::ostream &outStream);
 
 int main(int argc, char *argv[]) {
+    if (argc < 4) {
+        std::cerr << "Invalid number of argument\n" << "Usage: -load <in_file_path> -out|print [out_file_path]";
+    }
+
     //Tool Mode
-    int mode = std::string("-save").compare(argv[1]);
-    std::cout << "mode: " << mode << '\n';
-
-    //Input
-    ResourceInput inType = (argv[2] == std::string("-builtin")) ? ResourceInput::Builtin : ResourceInput::File;
-    const char *resourceName = argv[3];
-    std::cout << "type: " << int(inType) << "\tname: " << resourceName << '\n';
-
-    //Output
-    if (mode == 0) {
-        const char *outFilePath = argv[5];
-        std::cout << "output file : " << outFilePath << '\n';
-
-        save(inType, resourceName, outFilePath);
+    int inMode = std::string("-load").compare(argv[1]); // 0: load
+    if (inMode == 0) {
+        auto inPath = std::filesystem::path(argv[2]);
+        load(inPath);
     } else {
-        const char *inFilePath = argv[5];
-        std::cout << "input file : " << inFilePath << '\n';
+        std::cerr << "Tool mode: \"" << argv[1] << "\" not supported!";
+        return -1;
+    }
 
-        load(inType, resourceName, inFilePath);
+    int outMode = std::string("-out").compare(argv[3]); // 0: out / 1: print
+
+    if (outMode == 0 and argc >= 5) {
+        const char *outFilePath = argv[4];
+        std::ofstream outFile;
+        outFile.open(outFilePath);
+        save(outFile);
+    } else {
+        save(std::cout);
     }
 }
 
-void save(ResourceInput inType, const char *resourceName, const char *outFilePath) {
-    if (inType == ResourceInput::Builtin) {
-        MeshResource res = cubeMeshResource;
-        res.path = outFilePath;
-        res.Serialize();
-    }
+void load(const std::filesystem::path &path) {
+    MeshLoader loader(path);
+    loader.Load();
 }
 
-void load(ResourceInput inType, const char *ressourceName, const char *inFilePath) {
-    if (inType == ResourceInput::File) {
-        MeshResource res{inFilePath};
-        res.Deserialize();
-    }
+void save(std::ostream &outStream) {
 }

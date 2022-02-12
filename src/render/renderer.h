@@ -8,7 +8,7 @@
 
 #include "render_element.h"
 
-#include "../geometry.h"
+#include "../resource/mesh.h"
 #include "../texture.h"
 
 #ifndef EXPLORATION_RENDERER_H
